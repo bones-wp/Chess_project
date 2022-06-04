@@ -1,5 +1,4 @@
 public class Horse extends ChessPiece {
-
     public Horse(String color) {
         super(color);
     }
@@ -11,32 +10,25 @@ public class Horse extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        // проверяем, что все координаты в пределах доски:
         if (checkPos(line) && checkPos(column) && checkPos(toLine) && checkPos(toColumn)) {
-            // старт не равен конечной координате
-            if (line != toLine && column != toColumn &&
-                    // и конечная клетка пустая
-                    (chessBoard.board[toLine][toColumn] == null ||
-                    // или цвет фигуры в конечной клетке НЕ равен цвету текущей фигуры
-                    !chessBoard.board[toLine][toColumn].color.equals(this.color)) &&
-                    // и стартовая клетка не пустая
-                    chessBoard.board[line][column] != null) {
-                // если стартовая клетка НЕ равна коню то ходить нельзя
+            if (line != toLine && column != toColumn && (chessBoard.board[toLine][toColumn] == null || // check that horse
+                    !chessBoard.board[toLine][toColumn].color.equals(this.color)) &&                   // can't move out
+                    chessBoard.board[line][column] != null) {                                          // position is empty
                 if (!chessBoard.board[line][column].equals(this)) {
                     return false;
                 }
-                // все возможные позиции для коня
+
+                // all positions for horse
                 int[][] positions = new int[][]{
                         {line - 2, column - 1}, {line - 2, column + 1},
                         {line + 2, column - 1}, {line + 2, column + 1},
                         {line - 1, column - 2}, {line - 1, column + 2},
                         {line + 1, column - 2}, {line + 1, column + 2}};
 
-                // проверяем можно ли сходить исходя из условий position
                 for (int i = 0; i < positions.length; i++) {
                     if (positions[i][0] == toLine && positions[i][1] == toColumn)
-                        return true;
-                }
+                        return true;  // check that toLine and toColumn
+                }                                                                               // in positions
             }
         } else return false;
         return false;
@@ -47,8 +39,8 @@ public class Horse extends ChessPiece {
         return "H";
     }
 
-    @Override
-    public boolean checkPos(int pos) {
-        return super.checkPos(pos);
+    public boolean checkPos(int pos) {   // check that our position is correct
+        if (pos >= 0 && pos <= 7) return true;
+        else return false;
     }
 }
